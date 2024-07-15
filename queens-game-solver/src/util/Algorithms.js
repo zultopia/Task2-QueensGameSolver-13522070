@@ -10,37 +10,37 @@ const getRegions = (board) => {
     return Object.values(regions);
   };
   
-  const isSafeQueen = (solution, row, col) => {
+  const isSafeQueen = (solution, row, col, pieceSymbol) => {
     const directions = [
       [-1, 0], [1, 0], [0, -1], [0, 1],
       [-1, -1], [-1, 1], [1, -1], [1, 1]
     ];
-    return isSafeGeneric(solution, row, col, directions);
+    return isSafeGeneric(solution, row, col, directions, pieceSymbol);
   };
   
-  const isSafeChessQueen = (solution, row, col) => {
+  const isSafeChessQueen = (solution, row, col, pieceSymbol) => {
     const directions = [
       [-1, 0], [1, 0], [0, -1], [0, 1],
       [-1, -1], [-1, 1], [1, -1], [1, 1]
     ];
-    return isSafeGeneric(solution, row, col, directions);
+    return isSafeGeneric(solution, row, col, directions, pieceSymbol);
   };
   
-  const isSafeRook = (solution, row, col) => {
+  const isSafeRook = (solution, row, col, pieceSymbol) => {
     const directions = [
       [-1, 0], [1, 0], [0, -1], [0, 1]
     ];
-    return isSafeGeneric(solution, row, col, directions);
+    return isSafeGeneric(solution, row, col, directions, pieceSymbol);
   };
   
-  const isSafeBishop = (solution, row, col) => {
+  const isSafeBishop = (solution, row, col, pieceSymbol) => {
     const directions = [
       [-1, -1], [-1, 1], [1, -1], [1, 1]
     ];
-    return isSafeGeneric(solution, row, col, directions);
+    return isSafeGeneric(solution, row, col, directions, pieceSymbol);
   };
   
-  const isSafeKnight = (solution, row, col) => {
+  const isSafeKnight = (solution, row, col, pieceSymbol) => {
     const knightMoves = [
       [-2, -1], [-1, -2], [1, -2], [2, -1],
       [2, 1], [1, 2], [-1, 2], [-2, 1]
@@ -48,19 +48,19 @@ const getRegions = (board) => {
     for (let [dx, dy] of knightMoves) {
       let x = row + dx;
       let y = col + dy;
-      if (x >= 0 && y >= 0 && x < solution.length && y < solution[0].length && solution[x][y] === '♕') {
+      if (x >= 0 && y >= 0 && x < solution.length && y < solution[0].length && solution[x][y] === pieceSymbol) {
         return false;
       }
     }
     return true;
   };
   
-  const isSafeGeneric = (solution, row, col, directions) => {
+  const isSafeGeneric = (solution, row, col, directions, pieceSymbol) => {
     for (let [dx, dy] of directions) {
       let x = row + dx;
       let y = col + dy;
       while (x >= 0 && y >= 0 && x < solution.length && y < solution[0].length) {
-        if (solution[x][y] === '♕') return false;
+        if (solution[x][y] === pieceSymbol) return false;
         x += dx;
         y += dy;
       }
@@ -92,14 +92,14 @@ const getRegions = (board) => {
         return false;
       };
   
-  export const bfsSolver = (board, isSafe, pieceSymbol) => {
+  export const bfsSolver = (board, isSafe = isSafeQueen, pieceSymbol) => {
     let solution = board.map(row => row.slice());
     let regions = getRegions(board);
   
     for (let region of regions) {
       let found = false;
       for (let [row, col] of region) {
-        if (!found && isSafe(solution, row, col)) {
+        if (!found && isSafe(solution, row, col, pieceSymbol)) {
           solution[row][col] = pieceSymbol;
           found = true;
         }
@@ -110,14 +110,14 @@ const getRegions = (board) => {
     return solution;
   };
   
-  export const dfsSolver = (board, isSafe, pieceSymbol) => {
+  export const dfsSolver = (board, isSafe = isSafeQueen, pieceSymbol) => {
     let solution = board.map(row => row.slice());
     let regions = getRegions(board);
   
     for (let region of regions) {
       let found = false;
       for (let [row, col] of region) {
-        if (!found && isSafe(solution, row, col)) {
+        if (!found && isSafe(solution, row, col, pieceSymbol)) {
           solution[row][col] = pieceSymbol;
           found = true;
         }
@@ -128,7 +128,7 @@ const getRegions = (board) => {
     return solution;
   };
   
-  export const constraintProgrammingSolver = (board, isSafe, pieceSymbol) => {
+  export const constraintProgrammingSolver = (board, isSafe = isSafeQueen, pieceSymbol) => {
     const n = board.length;
     const m = board[0].length;
     let solution = Array.from({ length: n }, () => Array(m).fill('✖'));
