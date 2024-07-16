@@ -6,6 +6,7 @@ import {
   isSafeQueen, isSafeChessQueen, isSafeRook, isSafeBishop, isSafeKnight
 } from './util/Algorithms';
 import './App.css';
+import logo from './images/Logo.png'; // Import logo
 
 const App = () => {
   const [board, setBoard] = useState([]);
@@ -123,24 +124,28 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Queens Game Solver</h1>
-      <FileInput onFileUpload={handleFileUpload} />
-      <select value={algorithm} onChange={handleAlgorithmChange}>
-        <option value="BFS">BFS</option>
-        <option value="DFS">DFS</option>
-        <option value="CP">Constraint Programming</option>
-      </select>
-      <select value={piece} onChange={handlePieceChange}>
-        <option value="Queen">Queen</option>
-        <option value="Queen (Chess)">Queen (Chess)</option>
-        <option value="Rook">Rook</option>
-        <option value="Bishop">Bishop</option>
-        <option value="Knight">Knight</option>
-      </select>
-      <button onClick={handleSolve}>Solve</button>
-      <button onClick={addRow}>Add Row</button>
-      <button onClick={addColumn}>Add Column</button>
-      <Board board={solution.length ? solution : board} originalBoard={board} onCellClick={handleCellClick} />
+      <div className="container">
+        <img src={logo} alt="Logo" className="logo" />
+        <FileInput onFileUpload={handleFileUpload} />
+        <div className="controls">
+          <select value={algorithm} onChange={handleAlgorithmChange}>
+            <option value="BFS">BFS</option>
+            <option value="DFS">DFS</option>
+            <option value="CP">Constraint Programming</option>
+          </select>
+          <select value={piece} onChange={handlePieceChange}>
+            <option value="Queen">Queen</option>
+            <option value="Queen (Chess)">Queen (Chess)</option>
+            <option value="Rook">Rook</option>
+            <option value="Bishop">Bishop</option>
+            <option value="Knight">Knight</option>
+          </select>
+          <button onClick={handleSolve}>Solve</button>
+          <button onClick={addRow}>Add Row</button>
+          <button onClick={addColumn}>Add Column</button>
+        </div>
+        <Board board={solution.length ? solution : board} originalBoard={board} onCellClick={handleCellClick} />
+      </div>
     </div>
   );
 };
