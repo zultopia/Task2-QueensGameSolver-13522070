@@ -82,7 +82,7 @@ Queens Game Solver adalah aplikasi yang dirancang untuk menyelesaikan permainan 
     - React untuk pembangunan komponen UI.
     - FileReader untuk membaca file .txt.
 
-## How to Run Program
+## Cara Menjalankan Program
 1. Clone Repository
     ```
     git clone https://github.com/zultopia/Task2-QueensGameSolver-13522070.git
@@ -124,10 +124,10 @@ Queens Game Solver adalah aplikasi yang dirancang untuk menyelesaikan permainan 
 4. [GeeksforGeeks - DFS Algorithm](https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/)
 5. [GeeksforGeeks - Constraint Satisfaction Problems](https://www.geeksforgeeks.org/constraint-satisfaction-problems-csp-in-artificial-intelligence/)
 
-## Screenshots
+## Screenshot
 <!-- GUI Illustration -->
 <div align="center">
-  <h2>Graphical User Interface (GUI) Tampak Atas</h2>
+  <h2>Graphical User Interface (GUI) Program</h2>
   <img src="screenshot/Program.png" alt="GUI Screenshot" width="800">
 </div>
 
