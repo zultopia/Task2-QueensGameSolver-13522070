@@ -11,11 +11,40 @@ const getRegions = (board) => {
   };
   
   const isSafeQueen = (solution, row, col, pieceSymbol) => {
+    // Rule 1
+    const regions = getRegions(solution);
+    const currentRegion = regions.find(region => region.some(([r, c]) => r === row && c === col));
+  
+    for (let [r, c] of currentRegion) {
+      if (solution[r][c] === pieceSymbol) {
+        return false;
+      }
+    }
+  
+    // Rule 2
     const directions = [
       [-1, 0], [1, 0], [0, -1], [0, 1],
       [-1, -1], [-1, 1], [1, -1], [1, 1]
     ];
-    return isSafeGeneric(solution, row, col, directions, pieceSymbol);
+  
+    for (let [dx, dy] of directions) {
+      let x = row + dx;
+      let y = col + dy;
+      if (x >= 0 && y >= 0 && x < solution.length && y < solution[0].length) {
+        if (solution[x][y] === pieceSymbol) {
+          return false;
+        }
+      }
+    }
+  
+    // Rule 3
+    for (let i = 0; i < solution.length; i++) {
+      if (solution[i][col] === pieceSymbol || solution[row][i] === pieceSymbol) {
+        return false;
+      }
+    }
+
+    return true;
   };
   
   const isSafeChessQueen = (solution, row, col, pieceSymbol) => {
