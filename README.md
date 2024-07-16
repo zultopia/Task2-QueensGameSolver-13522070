@@ -85,8 +85,8 @@ Queens Game Solver adalah aplikasi yang dirancang untuk menyelesaikan permainan 
 ## How to Run Program
 1. Clone Repository
     ```
-    git clone https://github.com/username/QueensGameSolver.git
-    cd QueensGameSolver
+    git clone https://github.com/zultopia/Task2-QueensGameSolver-13522070.git
+    cd queens-game-solver
     ```
 
 2. Instalasi dependensi
