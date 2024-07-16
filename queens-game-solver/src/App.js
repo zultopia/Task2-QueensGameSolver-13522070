@@ -6,23 +6,33 @@ import {
   isSafeQueen, isSafeChessQueen, isSafeRook, isSafeBishop, isSafeKnight
 } from './util/Algorithms';
 import './App.css';
-import logo from './images/Logo.png'; // Import logo
+import logo from './images/Logo.png';
 
 const App = () => {
   const [board, setBoard] = useState([]);
   const [solution, setSolution] = useState([]);
   const [algorithm, setAlgorithm] = useState('BFS');
   const [piece, setPiece] = useState('Queen');
+  const [fileName, setFileName] = useState('');
+  const [error, setError] = useState('');
+  const [fileKey, setFileKey] = useState(Date.now());
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target.result;
-      const parsedBoard = parseBoard(text);
-      setBoard(parsedBoard);
-    };
-    reader.readAsText(file);
+    if (file && file.name.endsWith('.txt')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target.result;
+        const parsedBoard = parseBoard(text);
+        setBoard(parsedBoard);
+        setError('');
+      };
+      reader.readAsText(file);
+    } else {
+      setError('Please upload a valid .txt file.');
+      setBoard([]);
+      setSolution([]);
+    }
   };
 
   const parseBoard = (text) => {
@@ -32,9 +42,16 @@ const App = () => {
   };
 
   const handleSolve = () => {
+    if (board.length === 0) {
+      setError('No file selected. Please upload a file first.');
+      return;
+    }
     const isSafe = getIsSafeFunction(piece);
     const pieceSymbol = getPieceSymbol(piece);
     const solution = findSolution(board, algorithm, isSafe, pieceSymbol);
+    if (solution.length === 0) {
+      setError('No solution found for this board.');
+    } 
     setSolution(solution);
   };
 
@@ -103,6 +120,21 @@ const App = () => {
     setSolution([]);
   };
 
+  const removeRow = () => {
+    if (board.length > 0) {
+      setBoard(board.slice(0, -1));
+      setSolution([]);
+    }
+  };
+
+  const removeColumn = () => {
+    if (board[0] && board[0].length > 0) {
+      const newBoard = board.map(row => row.slice(0, -1));
+      setBoard(newBoard);
+      setSolution([]);
+    }
+  };
+
   const getRandomRegion = () => {
     const regions = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
     const existingRegions = new Set(board.flat());
@@ -122,11 +154,24 @@ const App = () => {
     }
   };
 
+  const handleRefresh = () => {
+    setBoard([]);
+    setSolution([]);
+    setAlgorithm('BFS');
+    setPiece('Queen');
+    setFileName('');
+    setError('');
+    setFileKey(Date.now());
+  };
+
   return (
     <div className="App">
       <div className="container">
+        <h1>
         <img src={logo} alt="Logo" className="logo" />
-        <FileInput onFileUpload={handleFileUpload} />
+        </h1>
+        <FileInput onFileUpload={handleFileUpload} fileKey={fileKey} />
+        {fileName && <p className="file-name">{fileName}</p>}
         <div className="controls">
           <select value={algorithm} onChange={handleAlgorithmChange}>
             <option value="BFS">BFS</option>
@@ -143,8 +188,28 @@ const App = () => {
           <button onClick={handleSolve}>Solve</button>
           <button onClick={addRow}>Add Row</button>
           <button onClick={addColumn}>Add Column</button>
+          <button onClick={removeRow}>Remove Row</button>
+          <button onClick={removeColumn}>Remove Column</button>
+          <button onClick={handleRefresh}>⟳ Refresh</button>
         </div>
-        <Board board={solution.length ? solution : board} originalBoard={board} onCellClick={handleCellClick} />
+        {error && <p className="error">{error}</p>}
+        <div className="board-container">
+          {board.length > 0 && (
+            <div className="board-wrapper">
+              <h2>Initial Board</h2>
+              <Board board={board} originalBoard={board} onCellClick={handleCellClick} />
+            </div>
+          )}
+          {solution.length > 0 && (
+            <>
+              <div className="arrow">→</div>
+              <div className="board-wrapper">
+                <h2>Solution Board</h2>
+                <Board board={solution} originalBoard={board} />
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
