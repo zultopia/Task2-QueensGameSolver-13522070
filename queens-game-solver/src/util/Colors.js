@@ -9,10 +9,11 @@ const colors = [
 const charToColor = {};
 
 const getColorForChar = (char) => {
-    if (!charToColor[char]) {
-        charToColor[char] = colors[Object.keys(charToColor).length % colors.length];
+    const lowerChar = char.toLowerCase(); 
+    if (!charToColor[lowerChar]) {
+        charToColor[lowerChar] = colors[Object.keys(charToColor).length % colors.length];
     }
-    return charToColor[char];
+    return charToColor[lowerChar];
 };
 
 export { getColorForChar };

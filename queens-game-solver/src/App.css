@@ -104,6 +104,18 @@ button:disabled {
   font-size: 20px;
 }
 
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+.no-solution {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
 .cell.region-A { background-color: red; }
 .cell.region-B { background-color: blue; }
 .cell.region-C { background-color: green; }

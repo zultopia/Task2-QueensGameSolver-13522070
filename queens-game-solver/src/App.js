@@ -16,6 +16,7 @@ const App = () => {
   const [fileName, setFileName] = useState('');
   const [error, setError] = useState('');
   const [fileKey, setFileKey] = useState(Date.now());
+  const [noSolution, setNoSolution] = useState(false);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -26,12 +27,14 @@ const App = () => {
         const parsedBoard = parseBoard(text);
         setBoard(parsedBoard);
         setError('');
+        setNoSolution(false);
       };
       reader.readAsText(file);
     } else {
       setError('Please upload a valid .txt file.');
       setBoard([]);
       setSolution([]);
+      setNoSolution(false);
     }
   };
 
@@ -49,9 +52,13 @@ const App = () => {
     const isSafe = getIsSafeFunction(piece);
     const pieceSymbol = getPieceSymbol(piece);
     const solution = findSolution(board, algorithm, isSafe, pieceSymbol);
-    if (solution.length === 0) {
+    if (solution.every(row => row.every(cell => cell === '✖'))) {
       setError('No solution found for this board.');
-    } 
+      setNoSolution(true);
+    } else {
+      setError('');
+      setNoSolution(false);
+    }
     setSolution(solution);
   };
 
@@ -161,6 +168,7 @@ const App = () => {
     setPiece('Queen');
     setFileName('');
     setError('');
+    setNoSolution(false);
     setFileKey(Date.now());
   };
 
@@ -168,7 +176,7 @@ const App = () => {
     <div className="App">
       <div className="container">
         <h1>
-        <img src={logo} alt="Logo" className="logo" />
+          <img src={logo} alt="Logo" className="logo" />
         </h1>
         <FileInput onFileUpload={handleFileUpload} fileKey={fileKey} />
         {fileName && <p className="file-name">{fileName}</p>}
@@ -209,6 +217,7 @@ const App = () => {
               </div>
             </>
           )}
+          {noSolution && <p className="no-solution">No Solution Found</p>}
         </div>
       </div>
     </div>

@@ -123,40 +123,78 @@ const getRegions = (board) => {
   export const bfsSolver = (board, isSafe = isSafeQueen, pieceSymbol = '♕') => {
     let solution = board.map(row => row.slice());
     let regions = getRegions(board);
-  
-    for (let region of regions) {
-      let queue = [...region];
-      while (queue.length) {
-        let [row, col] = queue.shift();
-        if (isSafe(solution, row, col, pieceSymbol)) {
-          solution[row][col] = pieceSymbol;
-          break;
+    let regionIndex = 0;
+
+    const bfs = (regionIndex) => {
+        if (regionIndex === regions.length) return true;
+
+        const region = regions[regionIndex];
+        let queue = [...region];
+
+        while (queue.length) {
+            let [row, col] = queue.shift();
+            if (isSafe(solution, row, col, pieceSymbol)) {
+                solution[row][col] = pieceSymbol;
+                if (bfs(regionIndex + 1)) {
+                    return true;
+                }
+                solution[row][col] = '✖';
+            }
         }
-      }
+        return false;
+    };
+
+    if (bfs(regionIndex)) {
+        for (let row = 0; row < solution.length; row++) {
+            for (let col = 0; col < solution[row].length; col++) {
+                if (solution[row][col] !== pieceSymbol) {
+                    solution[row][col] = '✖';
+                }
+            }
+        }
+        return solution;
+    } else {
+        return board.map(row => row.map(cell => '✖'));
     }
-  
-    solution = solution.map(row => row.map(cell => (cell === pieceSymbol ? pieceSymbol : '✖')));
-    return solution;
-  };
-  
-  export const dfsSolver = (board, isSafe = isSafeQueen, pieceSymbol = '♕') => {
+};
+
+export const dfsSolver = (board, isSafe = isSafeQueen, pieceSymbol = '♕') => {
     let solution = board.map(row => row.slice());
     let regions = getRegions(board);
-  
-    for (let region of regions) {
-      let stack = [...region];
-      while (stack.length) {
-        let [row, col] = stack.pop();
-        if (isSafe(solution, row, col, pieceSymbol)) {
-          solution[row][col] = pieceSymbol;
-          break;
+    let regionIndex = 0;
+
+    const dfs = (regionIndex) => {
+        if (regionIndex === regions.length) return true;
+
+        const region = regions[regionIndex];
+        let stack = [...region];
+
+        while (stack.length) {
+            let [row, col] = stack.pop();
+            if (isSafe(solution, row, col, pieceSymbol)) {
+                solution[row][col] = pieceSymbol;
+                if (dfs(regionIndex + 1)) {
+                    return true;
+                }
+                solution[row][col] = '✖';
+            }
         }
-      }
+        return false;
+    };
+
+    if (dfs(regionIndex)) {
+        for (let row = 0; row < solution.length; row++) {
+            for (let col = 0; col < solution[row].length; col++) {
+                if (solution[row][col] !== pieceSymbol) {
+                    solution[row][col] = '✖';
+                }
+            }
+        }
+        return solution;
+    } else {
+        return board.map(row => row.map(cell => '✖'));
     }
-  
-    solution = solution.map(row => row.map(cell => (cell === pieceSymbol ? pieceSymbol : '✖')));
-    return solution;
-  };
+};
   
   export const constraintProgrammingSolver = (board, isSafe = isSafeQueen, pieceSymbol = '♕') => {
     const n = board.length;
@@ -171,7 +209,6 @@ const getRegions = (board) => {
     }
   };
   
-  // Export all isSafe functions
   export {
     isSafeQueen,
     isSafeChessQueen,
