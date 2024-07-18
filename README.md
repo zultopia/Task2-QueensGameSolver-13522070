@@ -35,6 +35,17 @@
   </strong>
 </div>
 
+## Daftar Isi
+* [Deskripsi Aplikasi](#deskripsi-aplikasi)
+* [Algoritma yang Digunakan](#algoritma-yang-digunakan)
+* [Struktur Program](#struktur-program)
+* [Teknologi, Bahasa, dan Framework yang Digunakan](#teknologi-bahasa-dan-framework-yang-digunakan)
+* [Cara Menjalankan Program](#cara-menjalankan-program)
+* [Informasi Tambahan](#informasi-tambahan)
+* [Referensi Belajar](#referensi-belajar)
+* [Screenshot](#screenshot)
+* [Licensing](#licensing)
+
 ## Deskripsi Aplikasi
 
 Queens Game Solver adalah aplikasi yang dirancang untuk menyelesaikan permainan Queens Game, yang menantang pengguna untuk mengalokasikan sebuah "Queen" atau bidak catur lainnya pada setiap region warna di papan, mengikuti aturan-aturan tertentu. Aplikasi ini menerima input papan dari file .txt, menampilkan solusi pada GUI, dan mendukung beberapa algoritma pencarian solusi serta modifikasi langsung pada papan.
@@ -116,6 +127,11 @@ Queens Game Solver adalah aplikasi yang dirancang untuk menyelesaikan permainan 
     ```
 
 6. Klik 'Solve' untuk melihat solusi.
+
+## Informasi Tambahan
+1. Jika ingin menambah atau menghapus baris maupun kolom, klik tombol yang sesuai pada GUI
+
+2. Jika ingin mengganti warna pada cell board, klik cell yang ingin diubah lalu ganti alfanumerik yang diinginkan
 
 ## Referensi Belajar
 1. [React Documentation](https://legacy.reactjs.org/docs/getting-started.html)
