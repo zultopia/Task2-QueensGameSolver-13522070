@@ -115,14 +115,29 @@ const App = () => {
   };
 
   const addRow = () => {
-    const newRow = Array(board[0].length).fill(getRandomRegion());
+    if (board.length === 0) {
+      setBoard([['A']]); 
+      setSolution([]);
+      return;
+    }
+
+    const bottomRow = board[board.length - 1];
+    const randomColor = bottomRow[Math.floor(Math.random() * bottomRow.length)];
+    const newRow = Array(bottomRow.length).fill(randomColor);
     setBoard([...board, newRow]);
     setSolution([]);
   };
 
   const addColumn = () => {
-    const newRegion = getRandomRegion();
-    const newBoard = board.map(row => [...row, newRegion]);
+    if (board.length === 0) {
+      setBoard([['A']]); 
+      setSolution([]);
+      return;
+    }
+
+    const rightmostColumn = board.map(row => row[row.length - 1]);
+    const randomColor = rightmostColumn[Math.floor(Math.random() * rightmostColumn.length)];
+    const newBoard = board.map(row => [...row, randomColor]);
     setBoard(newBoard);
     setSolution([]);
   };
@@ -140,16 +155,6 @@ const App = () => {
       setBoard(newBoard);
       setSolution([]);
     }
-  };
-
-  const getRandomRegion = () => {
-    const regions = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
-    const existingRegions = new Set(board.flat());
-    let newRegion;
-    do {
-      newRegion = regions.charAt(Math.floor(Math.random() * regions.length));
-    } while (existingRegions.has(newRegion));
-    return newRegion;
   };
 
   const handleCellClick = (rowIndex, colIndex) => {
